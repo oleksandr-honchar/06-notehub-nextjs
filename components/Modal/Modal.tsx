@@ -15,24 +15,31 @@ export default function Modal({ children, onClose }: Props) {
         onClose();
       }
     }
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
   }, [onClose]);
 
   return createPortal(
-    <div
+  <div
       className={css.backdrop}
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
-      <div
+    <div
         className={css.modal}
         onClick={(e) => e.stopPropagation()} 
       >
         {children}
-      </div>
-    </div>,
+    </div>
+  </div>,
     document.body
   );
 }

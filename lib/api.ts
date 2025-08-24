@@ -15,7 +15,7 @@ export type FetchNotesParams = {
 export type CreateNotePayload = {
   title: string;
   content: string;
-  tag?: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
+  tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 };
 
 // Базовий URL та токен для SSR і клієнта
@@ -35,7 +35,7 @@ export async function fetchNotes({
   perPage,
   search,
 }: FetchNotesParams): Promise<FetchNotesResponse> {
-  const res = await api.get("/notes", { params: { page, perPage, search } });
+  const res = await api.get<FetchNotesResponse>("/notes", { params: { page, perPage, search } });
   return res.data;
 }
 
@@ -49,7 +49,7 @@ export async function deleteNote(id: string): Promise<Note> {
   return res.data;
 }
 
-export async function fetchNoteById(id: number | string): Promise<Note> {
-  const res = await api.get(`/notes/${id}`);
+export async function fetchNoteById(id: string): Promise<Note> {
+  const res = await api.get<Note>(`/notes/${id}`);
   return res.data;
 }
